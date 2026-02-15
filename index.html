@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para mi personita favorita ❤️</title>
+    <title>Acceso Restringido ❤️</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #ff4d6d; --secondary: #ff8fa3; --bg: #fff0f3; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background-color: var(--bg); font-family: 'Quicksand', sans-serif; overflow-x: hidden; text-align: center; color: #333; scroll-behavior: smooth; }
+        body { background-color: #000; font-family: 'Quicksand', sans-serif; overflow-x: hidden; text-align: center; color: white; scroll-behavior: smooth; }
         
+        /* Fondo de Corazones (Solo visible tras acceso) */
         #hearts-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; }
         .heart-float { position: absolute; color: var(--secondary); opacity: 0.6; animation: float 6s linear infinite; }
         @keyframes float { 0% { transform: translateY(100vh) scale(0); } 100% { transform: translateY(-10vh) scale(1.5); opacity: 0; } }
@@ -18,31 +19,33 @@
         .section { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px; display: none; }
         .active { display: flex !important; }
 
-        /* SOBRE MÁGICO */
-        .envelope-wrapper { cursor: pointer; transform-style: preserve-3d; transition: 0.5s; }
-        .envelope { width: 280px; height: 180px; background: #f08080; position: relative; border-radius: 0 0 10px 10px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
-        .envelope::before { content: ''; position: absolute; top: -140px; border-left: 140px solid transparent; border-right: 140px solid transparent; border-bottom: 140px solid #f08080; }
-        
-        /* PARALAJE EN FOTOS */
-        .parallax-wrap { perspective: 1000px; margin: 20px; }
-        .polaroid { 
-            background: white; padding: 10px 10px 30px 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); 
-            width: 220px; transition: transform 0.1s ease-out; transform-style: preserve-3d;
-        }
-        .polaroid img { width: 100%; height: 200px; object-fit: cover; pointer-events: none; }
+        /* FASE 0: HUELLA DIGITAL */
+        .fingerprint-container { width: 120px; height: 120px; margin: 30px; cursor: pointer; position: relative; border: 2px solid var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
+        .fingerprint-icon { font-size: 60px; filter: drop-shadow(0 0 10px var(--primary)); }
+        .scan-bar { position: absolute; width: 80%; height: 4px; background: var(--primary); top: 20%; box-shadow: 0 0 15px var(--primary); display: none; animation: scan 2s infinite ease-in-out; }
+        @keyframes scan { 0%, 100% { top: 20%; } 50% { top: 80%; } }
 
+        /* FASE 1, 2, 3: ESTILOS GENERALES */
+        .card { background: white; color: #333; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); max-width: 600px; width: 100%; }
+        h1 { font-family: 'Dancing Script', cursive; color: var(--primary); font-size: 2.5rem; margin-bottom: 15px; }
+        
         /* LÍNEA DE TIEMPO */
-        .timeline { border-left: 3px dashed var(--primary); margin: 30px 0; padding-left: 20px; text-align: left; max-width: 300px; }
-        .timeline-item { position: relative; margin-bottom: 25px; }
-        .timeline-item::before { content: '❤️'; position: absolute; left: -33px; background: var(--bg); }
+        .timeline { border-left: 3px dashed var(--primary); margin: 30px 0; padding-left: 20px; text-align: left; }
+        .timeline-item { position: relative; margin-bottom: 20px; font-size: 0.9rem; }
+        .timeline-item::before { content: '❤️'; position: absolute; left: -34px; background: white; border-radius: 50%; }
+
+        /* PARALAJE Y POLAROID */
+        .parallax-wrap { perspective: 1000px; margin: 15px; }
+        .polaroid { background: white; padding: 10px 10px 30px 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); width: 200px; transition: transform 0.1s; transform-style: preserve-3d; }
+        .polaroid img { width: 100%; height: 180px; object-fit: cover; }
 
         /* MENSAJE OCULTO */
-        .secret-input { padding: 10px; border-radius: 10px; border: 2px solid var(--primary); text-align: center; width: 100px; font-size: 1.2rem; }
+        .secret-input { padding: 10px; border-radius: 10px; border: 2px solid var(--primary); text-align: center; width: 120px; margin-top: 10px; }
         #hidden-content { display: none; background: #fff; padding: 20px; border-radius: 20px; border: 3px double var(--primary); margin-top: 20px; }
 
-        .card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); max-width: 600px; width: 100%; }
-        button { background: var(--primary); color: white; border: none; padding: 12px 25px; border-radius: 50px; cursor: pointer; font-weight: bold; margin: 10px; }
-        .coupon { border: 2px dashed var(--primary); padding: 10px; border-radius: 10px; cursor: pointer; margin: 5px; display: inline-block; width: 45%; }
+        button { background: var(--primary); color: white; border: none; padding: 12px 25px; border-radius: 50px; cursor: pointer; font-weight: bold; margin: 10px; transition: 0.3s; }
+        button:hover { transform: scale(1.05); }
+        .coupon { border: 2px dashed var(--primary); padding: 10px; border-radius: 10px; display: inline-block; width: 45%; margin: 5px; cursor: pointer; font-size: 0.8rem; }
     </style>
 </head>
 <body>
@@ -51,74 +54,98 @@
     <audio id="musica" loop><source src="musica.mp3" type="audio/mpeg"></audio>
 
     <div id="fase0" class="section active">
-        <h1>Una carta para mi niña... 💌</h1>
-        <div class="envelope-wrapper" onclick="abrirSobre()">
-            <div class="envelope"><div style="font-size: 50px; padding-top: 40px;">❤️</div></div>
+        <h2 style="letter-spacing: 3px; font-size: 1rem; margin-bottom: 20px;">BIO-SECURITY CHECK</h2>
+        <div class="fingerprint-container" id="scanner" onmousedown="startScan()" onmouseup="stopScan()" ontouchstart="startScan()" ontouchend="stopScan()">
+            <div class="scan-bar" id="bar"></div>
+            <div class="fingerprint-icon">☝️</div>
         </div>
+        <p id="status" style="color: var(--secondary); font-size: 0.8rem; letter-spacing: 1px;">MANTÉN PRESIONADO PARA ESCANEAR</p>
     </div>
 
     <div id="fase1" class="section">
         <div class="card">
-            <h1>Nuestro Tiempo Juntos ❤️</h1>
-            <div id="contador" style="font-size: 1.5rem; color: var(--primary); margin: 20px 0;"></div>
-            
-            <h3>Nuestra Historia:</h3>
+            <h1>Nuestro Camino ❤️</h1>
+            <div id="contador" style="font-size: 1.5rem; font-weight: bold; color: var(--primary); margin-bottom: 20px;"></div>
             <div class="timeline">
-                <div class="timeline-item"><b>Día 1:</b> El primer "Hola" que cambió todo.</div>
-                <div class="timeline-item"><b>Cita 1:</b> Donde supe que eras tú.</div>
-                <div class="timeline-item"><b>Hoy:</b> El mejor San Valentín de mi vida.</div>
+                <div class="timeline-item"><b>El inicio:</b> El día que todo comenzó a tener sentido.</div>
+                <div class="timeline-item"><b>Primer "Te Amo":</b> Un momento que guardo en mi corazón.</div>
+                <div class="timeline-item"><b>Hoy:</b> Celebrando nuestro amor una vez más.</div>
             </div>
-            <button onclick="irFase(2)">¡Siguiente! 😍</button>
+            <button onclick="irFase(2)">Continuar ✨</button>
         </div>
     </div>
 
     <div id="fase2" class="section">
         <div class="card">
-            <h1>¿Cuánto nos conocemos? 🧩</h1>
-            <p id="pregunta-texto">¿Cuál es mi parte favorita de ti?</p>
+            <h1>¿Me conoces bien? 🧩</h1>
+            <p id="pregunta-texto" style="margin-bottom: 20px;">¿Cuál es mi lugar favorito en el mundo?</p>
             <div id="opciones">
-                <button onclick="verificar(true)">Tu sonrisa y tus ojos</button>
-                <button onclick="verificar(true)">Todo tú</button>
-                <button onclick="verificar(true)">Tu forma de ser</button>
+                <button onclick="verificar()">Donde sea, pero contigo</button>
+                <button onclick="verificar()">Nuestra próxima cita</button>
+                <button onclick="verificar()">Tu abrazo</button>
             </div>
         </div>
     </div>
 
     <div id="fase3" class="section">
-        <div class="card">
-            <h1>¡Para la novia más linda! ❤️</h1>
-            <p id="typing-text" style="font-style: italic;"></p>
+        <div class="card" style="max-width: 800px;">
+            <h1>¡Feliz San Valentín! ❤️</h1>
+            <p id="typing-text" style="line-height: 1.6; margin-bottom: 20px;"></p>
 
             <div style="display: flex; justify-content: center; flex-wrap: wrap;">
-                <div class="parallax-wrap"><div class="polaroid" onmousemove="parallax(event, this)"><img src="foto1.jpg"><p>Tú y yo</p></div></div>
-                <div class="parallax-wrap"><div class="polaroid" onmousemove="parallax(event, this)"><img src="foto2.jpg"><p>Mi amor</p></div></div>
+                <div class="parallax-wrap"><div class="polaroid" onmousemove="parallax(event, this)"><img src="foto1.jpg"><p style="font-family:'Dancing Script'">Nosotros</p></div></div>
+                <div class="parallax-wrap"><div class="polaroid" onmousemove="parallax(event, this)"><img src="foto2.jpg"><p style="font-family:'Dancing Script'">Instantes</p></div></div>
+                <div class="parallax-wrap"><div class="polaroid" onmousemove="parallax(event, this)"><img src="foto3.jpg"><p style="font-family:'Dancing Script'">Eternidad</p></div></div>
             </div>
 
-            <div style="background: #fff5f7; padding: 20px; border-radius: 15px; margin: 20px 0;">
+            <div style="background: var(--bg); padding: 15px; border-radius: 15px; margin: 20px 0;">
                 <h3>🍯 Frasco de Razones</h3>
-                <p id="razon-texto">Haz clic abajo...</p>
-                <button onclick="nuevaRazon()">Sacar papelito 📜</button>
+                <p id="razon-texto" style="font-style: italic; margin: 10px 0;">¿Por qué te amo?</p>
+                <button onclick="nuevaRazon()" style="font-size: 0.8rem;">Sacar papelito 📜</button>
             </div>
 
-            <h3>Tus Vales Especiales 🎟️</h3>
+            <h3>Cupones de Amor 🎟️</h3>
             <div class="coupon" onclick="canjear('Helado')">🍦 Vale Helado</div>
             <div class="coupon" onclick="canjear('Cena')">🍕 Vale Cena</div>
+            <div class="coupon" onclick="canjear('Masaje')">💆 Vale Masaje</div>
+            <div class="coupon" onclick="canjear('Pelicula')">🎬 Vale Película</div>
 
             <div style="margin-top: 40px;">
-                <p>¿Tienes el código secreto? 🔒</p>
+                <p style="font-size: 0.8rem;">Ingrese código de desbloqueo (Aniversario):</p>
                 <input type="password" id="secretCode" class="secret-input" placeholder="0000" onkeyup="checkSecret()">
                 <div id="hidden-content">
-                    <h4>💖 MENSAJE SECRETO 💖</h4>
-                    <p>Eres el amor de mi vida. Gracias por decir que sí. Prometo cuidarte siempre.</p>
+                    <h4>🔒 MENSAJE PARA TI 🔒</h4>
+                    <p>Eres la mejor novia del mundo. Prometo hacerte feliz cada día de mi vida. Te amo.</p>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        const fechaInicio = new Date('2025-06-31T00:00:00'); // <--- CAMBIA TU FECHA AQUÍ
-        const razones = ["Tu risa", "Tu apoyo", "Tu forma de cuidarme", "Tus besos", "Todo de ti"];
+        // CONFIGURACIÓN (CAMBIA ESTO)
+        const fechaInicio = new Date('2024-01-01T00:00:00'); 
+        const razones = ["Tu risa única", "Tu apoyo incondicional", "Cómo me miras", "Tu inteligencia", "Tu corazón noble"];
 
+        // HUELLA DIGITAL
+        let scanTimer;
+        function startScan() {
+            document.getElementById('bar').style.display = 'block';
+            document.getElementById('status').innerText = "ESCANEANDO IDENTIDAD...";
+            scanTimer = setTimeout(() => {
+                confetti();
+                document.body.style.backgroundColor = "var(--bg)";
+                document.getElementById('musica').play();
+                irFase(1);
+                createHearts();
+            }, 2000);
+        }
+        function stopScan() {
+            clearTimeout(scanTimer);
+            document.getElementById('bar').style.display = 'none';
+            document.getElementById('status').innerText = "MANTÉN PRESIONADO PARA ESCANEAR";
+        }
+
+        // CONTADOR
         function actualizarContador() {
             const diff = new Date() - fechaInicio;
             const d = Math.floor(diff / 86400000);
@@ -129,29 +156,26 @@
         }
         setInterval(actualizarContador, 1000);
 
-        function abrirSobre() {
-            document.getElementById('musica').play();
-            confetti();
-            irFase(1);
-        }
-
         function irFase(n) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById('fase' + n).classList.add('active');
+            if(n === 3) escribir();
         }
 
-        function verificar(res) {
-            confetti();
-            irFase(3);
-            escribir();
-        }
+        function verificar() { confetti(); irFase(3); }
 
         function parallax(e, el) {
-            const { offsetWidth: width, offsetHeight: height } = el;
+            const { offsetWidth: w, offsetHeight: h } = el;
             const { offsetX: x, offsetY: y } = e;
-            const rotateX = ((y / height) - 0.5) * 20;
-            const rotateY = ((x / width) - 0.5) * -20;
-            el.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            el.style.transform = `rotateX(${((y/h)-0.5)*20}deg) rotateY(${((x/w)-0.5)*-20}deg)`;
+        }
+
+        function escribir() {
+            const t = "Cada día a tu lado es una aventura que no quiero que termine nunca. Gracias por ser mi novia y mi mejor amiga. ¡Te amo! ❤️";
+            let i = 0;
+            const d = document.getElementById("typing-text");
+            function type() { if(i < t.length) { d.innerHTML += t.charAt(i); i++; setTimeout(type, 50); } }
+            type();
         }
 
         function nuevaRazon() {
@@ -160,18 +184,10 @@
         }
 
         function checkSecret() {
-            if(document.getElementById('secretCode').value === '0311') { // <--- CÓDIGO SECRETO
+            if(document.getElementById('secretCode').value === '1402') { // CAMBIA CÓDIGO AQUÍ
                 document.getElementById('hidden-content').style.display = 'block';
                 confetti({particleCount: 150});
             }
-        }
-
-        function escribir() {
-            const texto = "Esta página es solo para ti. Eres lo más importante de mi mundo. ¡Feliz San Valentín! ❤️";
-            let i = 0;
-            const dest = document.getElementById("typing-text");
-            function type() { if(i < texto.length) { dest.innerHTML += texto.charAt(i); i++; setTimeout(type, 50); } }
-            type();
         }
 
         function canjear(p) { alert("¡Cupón de " + p + " activado! ❤️"); }
@@ -187,7 +203,6 @@
                 setTimeout(() => h.remove(), 6000);
             }, 300);
         }
-        createHearts();
     </script>
 </body>
 </html>
