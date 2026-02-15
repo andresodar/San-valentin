@@ -11,7 +11,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background-color: #000; font-family: 'Quicksand', sans-serif; overflow-x: hidden; text-align: center; color: white; scroll-behavior: smooth; }
         
-        /* Fondo de Corazones (Solo visible tras acceso) */
         #hearts-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; }
         .heart-float { position: absolute; color: var(--secondary); opacity: 0.6; animation: float 6s linear infinite; }
         @keyframes float { 0% { transform: translateY(100vh) scale(0); } 100% { transform: translateY(-10vh) scale(1.5); opacity: 0; } }
@@ -19,33 +18,32 @@
         .section { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px; display: none; }
         .active { display: flex !important; }
 
-        /* FASE 0: HUELLA DIGITAL */
         .fingerprint-container { width: 120px; height: 120px; margin: 30px; cursor: pointer; position: relative; border: 2px solid var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
         .fingerprint-icon { font-size: 60px; filter: drop-shadow(0 0 10px var(--primary)); }
         .scan-bar { position: absolute; width: 80%; height: 4px; background: var(--primary); top: 20%; box-shadow: 0 0 15px var(--primary); display: none; animation: scan 2s infinite ease-in-out; }
         @keyframes scan { 0%, 100% { top: 20%; } 50% { top: 80%; } }
 
-        /* FASE 1, 2, 3: ESTILOS GENERALES */
         .card { background: white; color: #333; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); max-width: 600px; width: 100%; }
         h1 { font-family: 'Dancing Script', cursive; color: var(--primary); font-size: 2.5rem; margin-bottom: 15px; }
         
-        /* LÍNEA DE TIEMPO */
         .timeline { border-left: 3px dashed var(--primary); margin: 30px 0; padding-left: 20px; text-align: left; }
         .timeline-item { position: relative; margin-bottom: 20px; font-size: 0.9rem; }
         .timeline-item::before { content: '❤️'; position: absolute; left: -34px; background: white; border-radius: 50%; }
 
-        /* PARALAJE Y POLAROID */
         .parallax-wrap { perspective: 1000px; margin: 15px; }
         .polaroid { background: white; padding: 10px 10px 30px 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); width: 200px; transition: transform 0.1s; transform-style: preserve-3d; }
         .polaroid img { width: 100%; height: 180px; object-fit: cover; }
 
-        /* MENSAJE OCULTO */
         .secret-input { padding: 10px; border-radius: 10px; border: 2px solid var(--primary); text-align: center; width: 120px; margin-top: 10px; }
         #hidden-content { display: none; background: #fff; padding: 20px; border-radius: 20px; border: 3px double var(--primary); margin-top: 20px; }
 
         button { background: var(--primary); color: white; border: none; padding: 12px 25px; border-radius: 50px; cursor: pointer; font-weight: bold; margin: 10px; transition: 0.3s; }
         button:hover { transform: scale(1.05); }
         .coupon { border: 2px dashed var(--primary); padding: 10px; border-radius: 10px; display: inline-block; width: 45%; margin: 5px; cursor: pointer; font-size: 0.8rem; }
+
+        /* NUEVO: Estilo para la lluvia de fotos */
+        .mini-foto { position: fixed; width: 70px; height: 70px; object-fit: cover; border: 3px solid white; border-radius: 10px; z-index: 2000; pointer-events: none; animation: caerFoto 3s forwards; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        @keyframes caerFoto { 0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
     </style>
 </head>
 <body>
@@ -59,8 +57,7 @@
             <div class="scan-bar" id="bar"></div>
             <div class="fingerprint-icon">❤️</div>
         </div>
-        <p id="status" style="color: var(--secondary); font-size: 0.8rem; letter-spacing: 1px;">MANTÉN PRESIONADO PARA ESCANEAR, NECESITO SABER SI ERES MI LOKA
-        PON TU MINI DEDO</p>
+        <p id="status" style="color: var(--secondary); font-size: 0.8rem; letter-spacing: 1px;">MANTÉN PRESIONADO PARA ESCANEAR, NECESITO SABER SI ERES MI LOKA<br>PON TU MINI DEDO</p>
     </div>
 
     <div id="fase1" class="section">
@@ -99,6 +96,13 @@
                 <div class="parallax-wrap"><div class="polaroid" onmousemove="parallax(event, this)"><img src="foto3.jpg"><p style="font-family:'Dancing Script'">Tus ojos</p></div></div>
             </div>
 
+            <button onclick="lluviaRecuerdos()" style="background: #fb6f92; margin: 20px 0;">📸 ¡Explosión de Recuerdos!</button>
+
+            <div style="margin: 20px 0; padding: 15px; background: #ffe5ec; border-radius: 15px; border: 2px solid var(--primary);">
+                <h3 style="color: var(--primary); font-size: 1.1rem;">⏳ Días para volver a verte</h3>
+                <div id="countdown-encuentro" style="font-size: 1.5rem; font-weight: bold; color: #d90429;">Cargando...</div>
+            </div>
+
             <div style="background: var(--bg); padding: 15px; border-radius: 15px; margin: 20px 0;">
                 <h3> Razones de porque te amo</h3>
                 <p id="razon-texto" style="font-style: italic; margin: 10px 0;">¿Por qué te amo?</p>
@@ -110,6 +114,16 @@
             <div class="coupon" onclick="canjear('Cena')"> Comprar lienzos y pintar toda la tardee </div>
             <div class="coupon" onclick="canjear('Masaje')"> Un pase por piura o paita</div>
             <div class="coupon" onclick="canjear('Pelicula')"> Casarnos</div>
+
+            <div style="text-align: left; margin-top: 30px; padding: 15px;">
+                <h3 style="color: var(--primary); margin-bottom: 15px;">🎵 Nuestra Playlist</h3>
+                <div style="background: #fff; border-radius: 10px; padding: 12px; border-left: 5px solid var(--primary); margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                    <b>Milo J - 111</b> <br> <small style="color: #666;">Para cuando te extraño...</small>
+                </div>
+                <div style="background: #fff; border-radius: 10px; padding: 12px; border-left: 5px solid var(--primary); margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                    <b>Rels B - Un Rodeoooo</b> <br> <small style="color: #666;">Nuestra canción favorita jiji</small>
+                </div>
+            </div>
 
             <div style="margin-top: 40px;">
                 <p style="font-size: 0.8rem;">Ingrese código de desbloqueo (Cumpleaños de lokuras):</p>
@@ -123,11 +137,10 @@
     </div>
 
     <script>
-        // CONFIGURACIÓN (CAMBIA ESTO)
         const fechaInicio = new Date('2025-07-31T00:00:00'); 
-        const razones = ["Tus ojos", "Tu comedia", "Cómo me miras", "Tu lokura", "Tu altura", "Tu cuerpo", "Tu risa", "Tu voz", "Tu forma de amar", "Tu corazon de pollito", "Tu ternura", "Rels B", "Tu color", "Tus gustos", "Tu pelo", "Tu nariz", "Tu sonrisa", "Tus cachetitos", "Tus ojitos que se achinan", "tu barrio", "Detallista", "Amable", "Enojona", "Snoppy", "Tus arranques"];
+        const razones = ["Tus ojos", "Tu comedia", "Cómo me miras", "Tu lokura", "Tu altura", "Tu cuerpo", "Tu risa", "Tu voz", "Tu forma de amar", "Tu corazon de pollito", "Tu ternura", "Rels B", "Tu color", "Tus gustos", "Tu pelo", "Tu nariz", "Tu sonrisa", "Tus cachetitos", "Tus ojitos que se achinan", "tu barrio", "Detallista", "Amable", "Enojona", "Snoopy", "Tus arranques"];
+        const fechaEncuentro = new Date('2026-02-25T00:00:00');
 
-        // HUELLA DIGITAL
         let scanTimer;
         function startScan() {
             document.getElementById('bar').style.display = 'block';
@@ -146,7 +159,6 @@
             document.getElementById('status').innerText = "Pon tu mini dedo";
         }
 
-        // CONTADOR
         function actualizarContador() {
             const diff = new Date() - fechaInicio;
             const d = Math.floor(diff / 86400000);
@@ -157,10 +169,38 @@
         }
         setInterval(actualizarContador, 1000);
 
+        function actualizarCountdown() {
+            const ahora = new Date();
+            const diff = fechaEncuentro - ahora;
+            if (diff > 0) {
+                const d = Math.floor(diff / 86400000);
+                const h = Math.floor((diff % 86400000) / 3600000);
+                document.getElementById('countdown-encuentro').innerText = `${d} días y ${h} horas`;
+            } else {
+                document.getElementById('countdown-encuentro').innerText = "¡YA CASI LLEGO! ❤️";
+            }
+        }
+        setInterval(actualizarCountdown, 1000);
+
+        function lluviaRecuerdos() {
+            const fotos = ['foto1.jpg', 'foto2.jpg', 'foto3.jpg'];
+            for(let i=0; i<15; i++) {
+                setTimeout(() => {
+                    const img = document.createElement('img');
+                    img.src = fotos[Math.floor(Math.random() * fotos.length)];
+                    img.classList.add('mini-foto');
+                    img.style.left = Math.random() * 100 + 'vw';
+                    document.body.appendChild(img);
+                    setTimeout(() => img.remove(), 3000);
+                }, i * 200);
+            }
+            confetti({ particleCount: 50, spread: 60 });
+        }
+
         function irFase(n) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById('fase' + n).classList.add('active');
-            if(n === 3) escribir();
+            if(n === 3) { escribir(); actualizarCountdown(); }
         }
 
         function verificar() { confetti(); irFase(3); }
@@ -175,8 +215,10 @@
             const t = "Hola amor, te hice esto con mucho cariño basandome en codigos muajaja, me he fijado en cada detalle para que se vea perfecto para ti, sé que te gustara, Te amo mucho. Feliz San Valentín ❤️";
             let i = 0;
             const d = document.getElementById("typing-text");
-            function type() { if(i < t.length) { d.innerHTML += t.charAt(i); i++; setTimeout(type, 50); } }
-            type();
+            if(d.innerHTML === "") {
+                function type() { if(i < t.length) { d.innerHTML += t.charAt(i); i++; setTimeout(type, 50); } }
+                type();
+            }
         }
 
         function nuevaRazon() {
@@ -185,9 +227,10 @@
         }
 
         function checkSecret() {
-            if(document.getElementById('secretCode').value === '0311') { // CAMBIA CÓDIGO AQUÍ
+            if(document.getElementById('secretCode').value === '0311') {
                 document.getElementById('hidden-content').style.display = 'block';
                 confetti({particleCount: 150});
+                window.scrollTo(0, document.body.scrollHeight);
             }
         }
 
@@ -207,7 +250,3 @@
     </script>
 </body>
 </html>
-
-
-
-
