@@ -54,35 +54,35 @@
     <audio id="musica" loop><source src="musica.mp3" type="audio/mpeg"></audio>
 
     <div id="fase0" class="section active">
-        <h2 style="letter-spacing: 3px; font-size: 1rem; margin-bottom: 20px;">BIO-SECURITY CHECK</h2>
+        <h2 style="letter-spacing: 3px; font-size: 1rem; margin-bottom: 20px;">SEGURIDAD CARAJO</h2>
         <div class="fingerprint-container" id="scanner" onmousedown="startScan()" onmouseup="stopScan()" ontouchstart="startScan()" ontouchend="stopScan()">
             <div class="scan-bar" id="bar"></div>
-            <div class="fingerprint-icon">☝️</div>
+            <div class="fingerprint-icon">Escanea Loka</div>
         </div>
-        <p id="status" style="color: var(--secondary); font-size: 0.8rem; letter-spacing: 1px;">MANTÉN PRESIONADO PARA ESCANEAR</p>
+        <p id="status" style="color: var(--secondary); font-size: 0.8rem; letter-spacing: 1px;">MANTÉN PRESIONADO PARA ESCANEAR, NECESITO SABER SI ERES MI LOKA</p>
     </div>
 
     <div id="fase1" class="section">
         <div class="card">
-            <h1>Nuestro Camino ❤️</h1>
+            <h1>Tiempo que LLEVAMOS JUNTOS ❤️</h1>
             <div id="contador" style="font-size: 1.5rem; font-weight: bold; color: var(--primary); margin-bottom: 20px;"></div>
             <div class="timeline">
-                <div class="timeline-item"><b>El inicio:</b> El día que todo comenzó a tener sentido.</div>
-                <div class="timeline-item"><b>Primer "Te Amo":</b> Un momento que guardo en mi corazón.</div>
-                <div class="timeline-item"><b>Hoy:</b> Celebrando nuestro amor una vez más.</div>
+                <div class="timeline-item"><b>31 julio:</b> El dia en el que TE PODIA LLAMAR NOVIAA </div>
+                <div class="timeline-item"><b>Primer "Te Amo":</b> Y nunca me cansé de decirlo y te  lo quiero decir cada que despiertes</div>
+                <div class="timeline-item"><b>Hoy:</b> San Valentín YAYYYY.</div>
             </div>
-            <button onclick="irFase(2)">Continuar ✨</button>
+            <button onclick="irFase(2)">SIGUIENTEEEEE</button>
         </div>
     </div>
 
     <div id="fase2" class="section">
         <div class="card">
-            <h1>¿Me conoces bien? 🧩</h1>
-            <p id="pregunta-texto" style="margin-bottom: 20px;">¿Cuál es mi lugar favorito en el mundo?</p>
+            <h1>¿Me conoces bien? Nivel: Dificil</h1>
+            <p id="pregunta-texto" style="margin-bottom: 20px;">¿Qué fue lo primero que me fije en ti? Nivel: Dificil</p>
             <div id="opciones">
-                <button onclick="verificar()">Donde sea, pero contigo</button>
-                <button onclick="verificar()">Nuestra próxima cita</button>
-                <button onclick="verificar()">Tu abrazo</button>
+                <button onclick="verificar()">Tu mochila</button>
+                <button onclick="verificar()">Tu gorro de panadera</button>
+                <button onclick="verificar()">Tus ojitos</button>
             </div>
         </div>
     </div>
@@ -93,29 +93,29 @@
             <p id="typing-text" style="line-height: 1.6; margin-bottom: 20px;"></p>
 
             <div style="display: flex; justify-content: center; flex-wrap: wrap;">
-                <div class="parallax-wrap"><div class="polaroid" onmousemove="parallax(event, this)"><img src="foto1.jpg"><p style="font-family:'Dancing Script'">Nosotros</p></div></div>
-                <div class="parallax-wrap"><div class="polaroid" onmousemove="parallax(event, this)"><img src="foto2.jpg"><p style="font-family:'Dancing Script'">Instantes</p></div></div>
-                <div class="parallax-wrap"><div class="polaroid" onmousemove="parallax(event, this)"><img src="foto3.jpg"><p style="font-family:'Dancing Script'">Eternidad</p></div></div>
+                <div class="parallax-wrap"><div class="polaroid" onmousemove="parallax(event, this)"><img src="foto1.jpg"><p style="font-family:'Dancing Script'">Ambos de negro jiji</p></div></div>
+                <div class="parallax-wrap"><div class="polaroid" onmousemove="parallax(event, this)"><img src="foto2.jpg"><p style="font-family:'Dancing Script'">En un carrito</p></div></div>
+                <div class="parallax-wrap"><div class="polaroid" onmousemove="parallax(event, this)"><img src="foto3.jpg"><p style="font-family:'Dancing Script'">Tus ojos</p></div></div>
             </div>
 
             <div style="background: var(--bg); padding: 15px; border-radius: 15px; margin: 20px 0;">
-                <h3>🍯 Frasco de Razones</h3>
+                <h3> Razones de porque te amo</h3>
                 <p id="razon-texto" style="font-style: italic; margin: 10px 0;">¿Por qué te amo?</p>
                 <button onclick="nuevaRazon()" style="font-size: 0.8rem;">Sacar papelito 📜</button>
             </div>
 
-            <h3>Cupones de Amor 🎟️</h3>
-            <div class="coupon" onclick="canjear('Helado')">🍦 Vale Helado</div>
-            <div class="coupon" onclick="canjear('Cena')">🍕 Vale Cena</div>
-            <div class="coupon" onclick="canjear('Masaje')">💆 Vale Masaje</div>
-            <div class="coupon" onclick="canjear('Pelicula')">🎬 Vale Película</div>
+            <h3>Cupones pa los planes🎟️</h3>
+            <div class="coupon" onclick="canjear('Helado')"> Ver peliculas en tu casita</div>
+            <div class="coupon" onclick="canjear('Cena')"> Comprar lienzos y pintar toda la tardee </div>
+            <div class="coupon" onclick="canjear('Masaje')"> Un pase por piura o paita</div>
+            <div class="coupon" onclick="canjear('Pelicula')"> Casarnos</div>
 
             <div style="margin-top: 40px;">
-                <p style="font-size: 0.8rem;">Ingrese código de desbloqueo (Aniversario):</p>
+                <p style="font-size: 0.8rem;">Ingrese código de desbloqueo (Cumpleaños de lokuras):</p>
                 <input type="password" id="secretCode" class="secret-input" placeholder="0000" onkeyup="checkSecret()">
                 <div id="hidden-content">
-                    <h4>🔒 MENSAJE PARA TI 🔒</h4>
-                    <p>Eres la mejor novia del mundo. Prometo hacerte feliz cada día de mi vida. Te amo.</p>
+                    <h4>🔒 MENSAJE PARA TI TOP SECRET 🔒</h4>
+                    <p>TE AMO MUCHO PATAS MOCHAS CHATA LOKA HERMOSA PRECIOSA IRE A VERTE ENTRE 25 DE FEBRERO - 1 DE MARZO SII - TE AMO MUCHO ❤️ .</p>
                 </div>
             </div>
         </div>
@@ -123,8 +123,8 @@
 
     <script>
         // CONFIGURACIÓN (CAMBIA ESTO)
-        const fechaInicio = new Date('2024-01-01T00:00:00'); 
-        const razones = ["Tu risa única", "Tu apoyo incondicional", "Cómo me miras", "Tu inteligencia", "Tu corazón noble"];
+        const fechaInicio = new Date('2025-07-31T00:00:00'); 
+        const razones = ["Tus ojos", "Tu comedia", "Cómo me miras", "Tu lokura", "Tu altura", "Tu cuerpo", "Tu risa", "Tu voz", "Tu forma de amar", "Tu corazon de pollito", "Tu ternura", "Rels B", "Tu color", "Tus gustos", "Tu pelo", "Tu nariz", "Tu sonrisa", "Tus cachetitos", "Tus ojitos que se achinan", "tu barrio", "Detallista", "Amable", "Enojona", "Snoppy", "Tus arranques"];
 
         // HUELLA DIGITAL
         let scanTimer;
@@ -142,7 +142,7 @@
         function stopScan() {
             clearTimeout(scanTimer);
             document.getElementById('bar').style.display = 'none';
-            document.getElementById('status').innerText = "MANTÉN PRESIONADO PARA ESCANEAR";
+            document.getElementById('status').innerText = "Pon tu mini dedo";
         }
 
         // CONTADOR
@@ -171,7 +171,7 @@
         }
 
         function escribir() {
-            const t = "Cada día a tu lado es una aventura que no quiero que termine nunca. Gracias por ser mi novia y mi mejor amiga. ¡Te amo! ❤️";
+            const t = "Hola amor, te hice esto con mucho cariño basandome en codigos muajaja, me he fijado en cada detalle para que se vea perfecto para ti, sé que te gustara, Te amo mucho. Feliz San Valentín ❤️";
             let i = 0;
             const d = document.getElementById("typing-text");
             function type() { if(i < t.length) { d.innerHTML += t.charAt(i); i++; setTimeout(type, 50); } }
@@ -184,7 +184,7 @@
         }
 
         function checkSecret() {
-            if(document.getElementById('secretCode').value === '1402') { // CAMBIA CÓDIGO AQUÍ
+            if(document.getElementById('secretCode').value === '0311') { // CAMBIA CÓDIGO AQUÍ
                 document.getElementById('hidden-content').style.display = 'block';
                 confetti({particleCount: 150});
             }
@@ -206,3 +206,4 @@
     </script>
 </body>
 </html>
+
