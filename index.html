@@ -41,15 +41,28 @@
         button:hover { transform: scale(1.05); }
         .coupon { border: 2px dashed var(--primary); padding: 10px; border-radius: 10px; display: inline-block; width: 45%; margin: 5px; cursor: pointer; font-size: 0.8rem; }
 
-        /* NUEVO: Estilo para la lluvia de fotos */
         .mini-foto { position: fixed; width: 70px; height: 70px; object-fit: cover; border: 3px solid white; border-radius: 10px; z-index: 2000; pointer-events: none; animation: caerFoto 3s forwards; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
         @keyframes caerFoto { 0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
+
+        /* Pantallas de Error */
+        .error-screen { background-color: black !important; color: white !important; display: none; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; position: fixed; top: 0; left: 0; width: 100%; z-index: 5000; }
+        .back-arrow { position: absolute; top: 20px; left: 20px; font-size: 2rem; cursor: pointer; color: white; text-decoration: none; }
     </style>
 </head>
 <body>
 
     <div id="hearts-container"></div>
     <audio id="musica" loop><source src="musica.mp3" type="audio/mpeg"></audio>
+
+    <div id="pantalla-mochila" class="error-screen">
+        <div class="back-arrow" onclick="cerrarError('pantalla-mochila')">⬅️</div>
+        <p style="font-family: Arial, sans-serif; font-size: 1.5rem; padding: 20px;">JAJAJA tu mochila rosada es unica.</p>
+    </div>
+
+    <div id="pantalla-pan" class="error-screen">
+        <div class="back-arrow" onclick="cerrarError('pantalla-pan')">⬅️</div>
+        <p style="font-size: 5rem;">🍞</p>
+    </div>
 
     <div id="fase0" class="section active">
         <h2 style="letter-spacing: 3px; font-size: 1rem; margin-bottom: 20px;">SEGURIDAD CARAJO</h2>
@@ -78,8 +91,8 @@
             <h1>¿Me conoces bien? Nivel: Dificil</h1>
             <p id="pregunta-texto" style="margin-bottom: 20px;">¿Qué fue lo primero que me fije en ti? Nivel: Dificil</p>
             <div id="opciones">
-                <button onclick="verificar()">Tu mochila</button>
-                <button onclick="verificar()">Tu gorro de panadera</button>
+                <button onclick="mostrarError('pantalla-mochila')">Tu mochila</button>
+                <button onclick="mostrarError('pantalla-pan')">Tu gorro de panadera</button>
                 <button onclick="verificar()">Tus ojitos</button>
             </div>
         </div>
@@ -97,6 +110,15 @@
             </div>
 
             <button onclick="lluviaRecuerdos()" style="background: #fb6f92; margin: 20px 0;">📸 ¡Explosión de Recuerdos!</button>
+
+            <div style="background: #fff0f3; padding: 20px; border-radius: 20px; border: 2px dashed var(--primary); margin: 20px 0;">
+                <h3 style="color: var(--primary); margin-bottom: 10px;">📖 Nuestro Libro de Deseos</h3>
+                <p style="font-size: 0.8rem; margin-bottom: 10px; color: #666;">Escribe algo que quieras hacer conmigo este año:</p>
+                <input type="text" id="wish-input" style="width: 80%; padding: 10px; border-radius: 10px; border: 2px solid var(--secondary); margin-bottom: 10px;" placeholder="Ej: Ir a la playa juntos...">
+                <br>
+                <button onclick="guardarDeseo()" style="font-size: 0.8rem; padding: 8px 15px;">Añadir al libro ✨</button>
+                <p id="wish-response" style="font-size: 0.9rem; color: var(--primary); font-weight: bold; margin-top: 10px;"></p>
+            </div>
 
             <div style="margin: 20px 0; padding: 15px; background: #ffe5ec; border-radius: 15px; border: 2px solid var(--primary);">
                 <h3 style="color: var(--primary); font-size: 1.1rem;">⏳ Días para volver a verte</h3>
@@ -116,25 +138,15 @@
             <div class="coupon" onclick="canjear('Pelicula')"> Casarnos</div>
 
             <div style="text-align: left; margin-top: 30px; padding: 15px;">
-                <h3 style="color: var(--primary); margin-bottom: 15px;">🎵 Nuestras canciones , te las dedico </h3>
+                <h3 style="color: var(--primary); margin-bottom: 15px;">🎵 Nuestra Playlist</h3>
                 <div style="background: #fff; border-radius: 10px; padding: 12px; border-left: 5px solid var(--primary); margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-                    <b>Milo J - Deseo perder </b> <br> <small style="color: #666;">Para cuando te extraño...</small>
+                    <b>Milo J - 111</b> <br> <small style="color: #666;">Para cuando te extraño...</small>
                 </div>
                 <div style="background: #fff; border-radius: 10px; padding: 12px; border-left: 5px solid var(--primary); margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-                    <b>Rels B - Love it</b> <br> <small style="color: #666;">YA SE QUE TE HARTAAA</small>
+                    <b>Rels B - Un Rodeoooo</b> <br> <small style="color: #666;">Nuestra canción favorita jiji</small>
                 </div>
-                 <div style="background: #fff; border-radius: 10px; padding: 12px; border-left: 5px solid var(--primary); margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-                    <b>Yan Block - TORRRES - Yo sé</b> <br> <small style="color: #666;">ummmmmm</small>
-                </div>
-                  <div style="background: #fff; border-radius: 10px; padding: 12px; border-left: 5px solid var(--primary); margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-                    <b>Shybully - Tattoo</b> <br> <small style="color: #666;">mi favorita</small>
-                </div>
-                   <div style="background: #fff; border-radius: 10px; padding: 12px; border-left: 5px solid var(--primary); margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-                    <b>GoodKid</b> <br> <small style="color: #666;">Me encanta</small>
-                </div>
-                     
             </div>
-                
+
             <div style="margin-top: 40px;">
                 <p style="font-size: 0.8rem;">Ingrese código de desbloqueo (Cumpleaños de lokuras):</p>
                 <input type="password" id="secretCode" class="secret-input" placeholder="0000" onkeyup="checkSecret()">
@@ -192,6 +204,9 @@
         }
         setInterval(actualizarCountdown, 1000);
 
+        function mostrarError(id) { document.getElementById(id).style.display = 'flex'; }
+        function cerrarError(id) { document.getElementById(id).style.display = 'none'; }
+
         function lluviaRecuerdos() {
             const fotos = ['foto1.jpg', 'foto2.jpg', 'foto3.jpg'];
             for(let i=0; i<15; i++) {
@@ -205,6 +220,16 @@
                 }, i * 200);
             }
             confetti({ particleCount: 50, spread: 60 });
+        }
+
+        function guardarDeseo() {
+            const input = document.getElementById('wish-input');
+            const resp = document.getElementById('wish-response');
+            if(input.value !== "") {
+                resp.innerText = "Anotado en mi lista de prioridades, amor. ¡Lo haremos realidad! ❤️";
+                input.value = "";
+                confetti({particleCount: 100, spread: 70, origin: { y: 0.6 }});
+            }
         }
 
         function irFase(n) {
@@ -225,7 +250,7 @@
             const t = "Hola amor, te hice esto con mucho cariño basandome en codigos muajaja, me he fijado en cada detalle para que se vea perfecto para ti, sé que te gustara, Te amo mucho. Feliz San Valentín ❤️";
             let i = 0;
             const d = document.getElementById("typing-text");
-            if(d.innerHTML === "") {
+            if(d && d.innerHTML === "") {
                 function type() { if(i < t.length) { d.innerHTML += t.charAt(i); i++; setTimeout(type, 50); } }
                 type();
             }
@@ -260,4 +285,3 @@
     </script>
 </body>
 </html>
-
